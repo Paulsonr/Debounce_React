@@ -1,2 +1,2 @@
 # Debounce_React
-Created with CodeSandbox
+Created Debounce method for button and input
