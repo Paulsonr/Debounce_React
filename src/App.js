@@ -1,37 +1,22 @@
 import "./styles.css";
+import { useState } from "react";
+import useDebounce from "./hooks/useDebounce";
+import { useEffect } from "react";
 
 export default function App() {
+  const [searchValue, setSearchValue] = useState(null);
   const delay_time = 300;
-  const API_call_func = () => {
-    console.log("API is calling");
-  };
-  // const debouncingAPIFunction = (fn, delay) => {
-  //   let timer;
-  //   return () => {
-  //     let context = arguments;
-  //     clearInterval(timer);
-  //     timer = setTimeout(() => {
-  //       fn(context, arguments);
-  //     }, delay);
-  //   };
-  // }; initial method for reference :>
 
-  // const betterFunction = debouncingAPIFunction(API_call_func, delay_time);
-  const betterFunction = (fn, delay) => {
-    let timer;
-    return () => {
-      let context = arguments;
-      clearInterval(timer);
-      timer = setTimeout(() => {
-        fn(context, arguments);
-      }, delay);
-    };
-  };
-
+  const debouncedSearchValue = useDebounce(searchValue, delay_time);
+  useEffect(() => {
+    if (debouncedSearchValue) {
+      console.log("OnChange API call for >> ", debouncedSearchValue);
+    }
+  }, [debouncedSearchValue]);
   return (
     <div className="App">
       {/* <button onClick={betterFunction(API_call_func, delay_time)}>CALL</button> */}
-      <input onChange={betterFunction(API_call_func, delay_time)} />
+      <input onChange={(e) => setSearchValue(e.target.value)} />
     </div>
   );
 }
